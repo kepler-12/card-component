@@ -25,10 +25,10 @@ export default {
     }
   },
   mounted() {
-    tilt.init(this.$el, {
-      reverse: true,
-      max: 5
-    });
+    // tilt.init(this.$el, {
+    //   reverse: true,
+    //   max: 5
+    // });
   },
   data() {
     return {

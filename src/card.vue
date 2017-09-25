@@ -7,6 +7,7 @@
         <h1>{{ card.front }}</h1>
       </div>
     </div>
+    <!-- End Card Back -->
 
     <!-- Card Back -->
     <div class="back" tabindex="-1">
@@ -14,6 +15,7 @@
         <h1>{{ card.back }}</h1>
       </div>
     </div>
+    <!-- End Card Back -->
   </div>
 </template>
 
@@ -28,11 +30,12 @@ export default {
     return {
       front: '',
       back: '',
-      axis: 'Y',
+      scale: 1.3, // scale during the flip
+      axis: 'Y', // axis the card "flips" over
       flipped: false,
       locked: false,
       timing: {
-        duration: 800,
+        duration: 900,
         iterations: 1,
         easing: 'ease-in-out',
         fill: 'forwards'
@@ -41,15 +44,12 @@ export default {
   },
   mounted() {
     tilt.init(this.$el, {
-      reverse: true,  // reverse the tilt direction
-      max: 35,     // max tilt rotation (degrees)
-      perspective: 1000,   // Transform perspective, the lower the more extreme the tilt gets.
-      scale: 1.2,      // 2 = 200%, 1.5 = 150%, etc..
-      speed: 300,    // Speed of the enter/exit transition
-      easing: "cubic-bezier(.03,.98,.52,.99)",    // Easing on enter/exit.
-      transition: true,   // Set a transition on enter/exit.
-      reset: true,    // If the tilt effect has to be reset on exit.
+      reverse: true, // reverse the tilt direction
+      max: 25, // max tilt rotation (degrees)
+      scale: 1.2, // scale on hover
     });
+
+    // assign the parts of the card as data
     this.front = this.$el.querySelector('.front')
     this.back = this.$el.querySelector('.back')
   },
@@ -59,18 +59,20 @@ export default {
       console.log('flip!');
       this.locked = true;
 
+      // the transforms for the side to be hidden
       const sideOne = [
-        { transform: `translateZ(-200px) rotate${this.axis}(0deg) scale(1.3)` },
-        { transform: `translateZ(-100px) rotate${this.axis}(0deg) scale(1.3)`, offset: 0.15 },
-        { transform: `translateZ(-100px) rotate${this.axis}(180deg) scale(1.3)`, offset: 0.65 },
-        { transform: `translateZ(-200px) rotate${this.axis}(180deg) scale(1.3)` }
+        { transform: `translateZ(-200px) rotate${this.axis}(0deg) scale(${this.scale})` },
+        { transform: `translateZ(-100px) rotate${this.axis}(0deg) scale(${this.scale})`, offset: 0.15 },
+        { transform: `translateZ(-100px) rotate${this.axis}(180deg) scale(${this.scale})`, offset: 0.65 },
+        { transform: `translateZ(-200px) rotate${this.axis}(180deg) scale(${this.scale})` }
       ];
 
+      // the transforms for the side to be revealed
       const sideTwo = [
-        { transform: `translateZ(-200px) rotate${this.axis}(180deg) scale(1.3)` },
-        { transform: `translateZ(-100px) rotate${this.axis}(180deg) scale(1.3)`, offset: 0.15 },
-        { transform: `translateZ(-100px) rotate${this.axis}(360deg) scale(1.3)`, offset: 0.65 },
-        { transform: `translateZ(-200px) rotate${this.axis}(360deg) scale(1.3)` }
+        { transform: `translateZ(-200px) rotate${this.axis}(180deg) scale(${this.scale})` },
+        { transform: `translateZ(-100px) rotate${this.axis}(180deg) scale(${this.scale})`, offset: 0.15 },
+        { transform: `translateZ(-100px) rotate${this.axis}(360deg) scale(${this.scale})`, offset: 0.65 },
+        { transform: `translateZ(-200px) rotate${this.axis}(360deg) scale(${this.scale})` }
       ];
 
       // Switch to the back
@@ -86,6 +88,7 @@ export default {
         }
       }
 
+      // switch to the front
       if (this.flipped) {
         console.log('switching to the front!');
         this.front.animate(sideTwo, this.timing);

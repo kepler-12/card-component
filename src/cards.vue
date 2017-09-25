@@ -1,6 +1,6 @@
 <template>
   <section class="cards-wrapper">
-    <h1 class="title">Which Kind Of Salad Are You?</h1>
+    <h1 class="title">{{ title }}</h1>
     <div v-if="cards" class="cards">
       <card v-for="card in cards" :card="card" :key="card.id" :style="cardStyle" />
     </div>
@@ -19,8 +19,8 @@ export default {
   computed: {
     cardStyle() {
       return {
-        width: `calc(80vw / 4)`,
-        height: `calc(80vw / 4)`
+        width: 'calc(80vw / 4)',
+        height: 'calc(80vw / 4)'
       }
     }
   },
@@ -32,6 +32,7 @@ export default {
   },
   data() {
     return {
+      title: 'Which Kind Of Salad Are You?',
       cards: [
         {
           id: 1,

@@ -1,13 +1,16 @@
 <template>
   <section class="cards-wrapper">
     <h1 class="title">{{ title }}</h1>
-    <div v-if="cards" class="cards">
+
+    <transition-group name="shuffle-cards" tag="div" v-if="cards" class="cards">
       <card v-for="card in cards" :card="card" :key="card.id" :style="cardStyle" />
-    </div>
+    </transition-group>
+
   </section>
 </template>
 
 <script>
+import { shuffle } from 'lodash'
 import tilt from 'vanilla-tilt'
 import card from './Card.vue'
 
@@ -25,10 +28,7 @@ export default {
     }
   },
   mounted() {
-    // tilt.init(this.$el, {
-    //   reverse: true,
-    //   max: 5
-    // });
+    [1100, 1150, 1175, 1200, 1300, 1500, 2000, 2500, 3500, 4500].forEach(e => setTimeout(this.shuffle, e))
   },
   data() {
     return {
@@ -66,11 +66,20 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    shuffle() {
+      this.cards = shuffle(this.cards)
+    }
   }
 }
 </script>
 
 <style lang="scss">
+.shuffle-cards-move {
+  transition: transform .75s;
+}
+
 .cards {
   display: flex;
   justify-content: center;

@@ -52,6 +52,9 @@ export default {
     // assign the parts of the card as data
     this.front = this.$el.querySelector('.front')
     this.back = this.$el.querySelector('.back')
+
+    // flip the card right away
+    setTimeout(this.flip, 500)
   },
   methods: {
     flip() {

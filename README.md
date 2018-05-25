@@ -1,4 +1,4 @@
-# survey
+# card component
 
 > A Vue.js project
 
